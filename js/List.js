@@ -10,6 +10,7 @@ function List() {
 
 
 	List.add = function add(text){
+		console.log('List.add called', text);
 		if (text) {
 			internal.push(text);
 			$(document).trigger('list.update', [internal]);

@@ -3,9 +3,24 @@ function TopicRenderer(){
   var topicRenderer = {};
   var $topic = $('#topics');
   const $row = $('<li>');
+  const $editableRow = $('<li><input type="text" class="topic edit"></li>');
+
+  topicRenderer.topicNewFinished = function topicNewFinished(){
+    console.log("TopicRenderer.topicNewFinished called");
+
+    var topicName = $topic.find('.edit').val();
+    $(document).trigger("topic.ready", topicName);
+    $topic.find('.edit').remove();
+  }
+
+  topicRenderer.addTopic = function addTopic(){
+    console.log("TopicRenderer.addTopic called");
+
+    $topic.append($editableRow.clone()).find('.edit').focus();
+  }
 
   topicRenderer.topicChange = function topicChange(newText){
-    console.log("Renderer.topicChange called", newText);
+    console.log("TopicRenderer.topicChange called", newText);
 
     $('li.active',$topic).toggleClass('active');
     var selector = ":contains('"+newText+"')";
@@ -13,7 +28,7 @@ function TopicRenderer(){
   }
 
   topicRenderer.update = function update(topics, current) {
-    console.log("Renderer.update called", arguments);
+    console.log("TopicRenderer.update called", arguments);
 
     var collection = $();
     topics.forEach(function (value,index) {
@@ -24,7 +39,7 @@ function TopicRenderer(){
       }
       collection = collection.add(element);
     });
-    $topic.append(collection);
+    $topic.empty().append(collection);
 
   }
 
@@ -36,6 +51,14 @@ function TopicRenderer(){
 
     $(document).on("topic.changed", function(event, newTopic){
       topicRenderer.topicChange(newTopic);
+    });
+
+    $(document).on("topic.add.new", function(event){
+      topicRenderer.addTopic();
+    });
+
+    $(document).on('topic.new.finished',  function(event){
+      topicRenderer.topicNewFinished();
     });
 
 

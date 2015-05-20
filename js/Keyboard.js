@@ -10,27 +10,48 @@ function Keyboard() {
 
 	var Keyboard = {};
 	const EVENT_BUTTON_MAP = {
-		13 : "enter",
+		//13 : "enter",
 		37 : "left",
 		38 : "up",
 		39 : "right",
 		40 : "down"
 	};
+
+	const ALT_BUTTON_MAP = {
+		84 : "topic.add.new"
+	};
+
+
 	Object.freeze(EVENT_BUTTON_MAP);
 
 	/*const controlKeys = [LEFT, UP, RIGHT, DOWN, ALT, CTRL,ENTER, TAB,DEL];*/
 
-  Keyboard.init = function init() {
-		var customEvent;
-		$(document).on("keydown", function keyEventObserver(event) {
 
-		 if(EVENT_BUTTON_MAP[event.which]){
-				customEvent = 'key.' + EVENT_BUTTON_MAP[event.which];
-			} else {
-				customEvent = 'text';
-			}
-			//console.log(event.which,customEvent,Object.keys(EVENT_BUTTON_MAP));
-			$(document).trigger(customEvent);
+  function translate(event){
+		var customEvent = "NOPE";
+
+		if (event.which === 13) {
+				if ($(event.target).hasClass('topic')){
+					customEvent = 'topic.new.finished';
+				}
+		}
+
+		if(event.altKey && ALT_BUTTON_MAP[event.which]){
+			customEvent = ALT_BUTTON_MAP[event.which];
+		}
+
+		if(EVENT_BUTTON_MAP[event.which]){
+			customEvent = 'key.' + EVENT_BUTTON_MAP[event.which];
+		}
+
+		console.log(event, customEvent);
+		return customEvent;
+	}
+
+  Keyboard.init = function init() {
+		$(document).on("keydown", function keyEventObserver(event) {
+			event.stopImmediatePropagation();
+			$(document).trigger(translate(event));
 		});
 	}
 

@@ -7,7 +7,18 @@ function TopicManager(){
   var list = getListForTopic();
 
 
-  topicManager.addTopic = function(){}
+  function update(){
+    $(document).trigger('topic.update', [topics, currTopic]);
+  }
+
+
+  function addTopic(newTopic){
+    console.log("TopicManager addTopic called");
+
+    topics.push(newTopic);
+    currTopic = topics.length - 1;
+    update();
+  }
 
   function getListForTopic(){
     //return a list based on current topic
@@ -15,6 +26,8 @@ function TopicManager(){
   }
 
   function setTopic(direction){
+    console.log("TopicManager setTopic called");
+
     if (direction === 'left') {
       currTopic = (currTopic === 0) ? topics.length-1 : currTopic - 1;
     } else {
@@ -23,13 +36,17 @@ function TopicManager(){
   }
 
   topicManager.init = function () {
-    $(document).trigger('topic.update', [topics, currTopic]);
-
+    update();
     $(document).on("key.left key.right", function(event){
       setTopic(event.namespace);
-      list = getListForTopic();
       $(document).trigger('topic.changed', [topics[currTopic]]);
+      list = getListForTopic();
     });
+
+    $(document).on("topic.ready", function(event, newTopic){
+      addTopic(newTopic);
+    });
+
 
     return topicManager;
   }

@@ -47,8 +47,8 @@ function ListRenderer() {
 
   $(document).on("text", function(event){
     // put text somewhere.
-    $('#searchContainer').show();
-    $('#inputBox').focus();
+    // $('#searchContainer').show();
+    // $('#inputBox').focus();
   });
 
 };
