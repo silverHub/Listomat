@@ -1,66 +1,28 @@
 
-function List(array) {
+function List() {
 
 	var List = {};
-	var internal = [];
-	if (array && $.isArray(array)){
-		internal = array;
-	}
+	var internal = [
+		"General stuff 1",
+		"General stuff 2",
+		"General stuff 3",
+	] || [];
 
-	const $row = $('<li>').attr("tabindex",0);
-	const $list = $("#list");
-	var focused;
-
-	List.prev = function prev(){
-		var f = $list.find("li:focus");
-		if (f.length){
-			f.prev().focus();
-		} else {
-			$list.find('li:first').focus();
-		}
-	}
-
-	List.next = function next(){
-		var f = $list.find("li:focus");
-		if (f.length){
-			f.next().focus();
-		} else {
-			$list.find('li:first').focus();
-		}
-	}
 
 	List.add = function add(text){
 		if (text) {
 			internal.push(text);
+			$(document).trigger('list.update', [internal]);
 		}
 	}
 
-	List.render = function(){
-		$list.empty();
-		internal.forEach(function(value, index){
-			$row.clone().html(value).appendTo($list);
-		});
-	}
+
+	$(document).trigger('list.update', [internal]);
 
 	$(document).on("key.enter", function(event){
 		$('#searchContainer').hide();
 		List.add($('#inputBox').val());
 		$('#inputBox').val('');
-		List.render();
-	});
-
-	$(document).on("key.up", function(event){
-		List.prev();
-	});
-
-	$(document).on("key.down", function(event){
-		List.next();
-	});
-
-	$(document).on("text", function(event){
-		// put text somewhere.
-		$('#searchContainer').show();
-		$('#inputBox').focus();
 	});
 
 	return List;

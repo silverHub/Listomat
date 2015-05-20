@@ -4,21 +4,14 @@ function TopicManager(){
   var topicManager = {};
   var topics = ["General", "Film", "JS Projects"];
   var currTopic = 0;
+  var list = getListForTopic();
 
 
-  topicManager.addTopic = function(){
+  topicManager.addTopic = function(){}
 
-
-    renderer.update();
-  }
-
-  topicManager.getListForTopic = function(){
+  function getListForTopic(){
     //return a list based on current topic
-    return List([
-      "General stuff 1",
-      "General stuff 2",
-      "General stuff 3",
-    ]);
+    return List();
   }
 
   function setTopic(direction){
@@ -30,12 +23,11 @@ function TopicManager(){
   }
 
   topicManager.init = function () {
-
-
     $(document).trigger('topic.update', [topics, currTopic]);
 
     $(document).on("key.left key.right", function(event){
       setTopic(event.namespace);
+      list = getListForTopic();
       $(document).trigger('topic.changed', [topics[currTopic]]);
     });
 

@@ -13,7 +13,6 @@ function TopicRenderer(){
   }
 
   topicRenderer.update = function update(topics, current) {
-
     console.log("Renderer.update called", arguments);
 
     var collection = $();
@@ -32,7 +31,6 @@ function TopicRenderer(){
   topicRenderer.init = function init(){
 
     $(document).on("topic.update", function(event, topics, current){
-      console.log(arguments);
       topicRenderer.update(topics, current);
     });
 
