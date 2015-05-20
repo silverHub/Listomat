@@ -1,12 +1,9 @@
 
 (function(){
 
-// modules
- 	var keyboardManager = Keyboard();
-  var topicManager = TopicManager();
-
-  topicManager.init();
+  // modules
+  TopicRenderer().init();
+ 	Keyboard().init();
+  var topicManager = TopicManager().init();
   topicManager.getListForTopic().render();
-  keyboardManager.init();
-
 })();

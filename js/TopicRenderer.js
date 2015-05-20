@@ -5,7 +5,7 @@ function TopicRenderer(){
   const $row = $('<li>');
 
   topicRenderer.topicChange = function topicChange(newText){
-    console.log("Renderer.topicChange called");
+    console.log("Renderer.topicChange called", newText);
 
     $('li.active',$topic).toggleClass('active');
     var selector = ":contains('"+newText+"')";
@@ -14,7 +14,7 @@ function TopicRenderer(){
 
   topicRenderer.update = function update(topics, current) {
 
-    console.log("Renderer.update called");
+    console.log("Renderer.update called", arguments);
 
     var collection = $();
     topics.forEach(function (value,index) {
@@ -26,6 +26,20 @@ function TopicRenderer(){
       collection = collection.add(element);
     });
     $topic.append(collection);
+
+  }
+
+  topicRenderer.init = function init(){
+
+    $(document).on("topic.update", function(event, topics, current){
+      console.log(arguments);
+      topicRenderer.update(topics, current);
+    });
+
+    $(document).on("topic.changed", function(event, newTopic){
+      topicRenderer.topicChange(newTopic);
+    });
+
 
   }
 
