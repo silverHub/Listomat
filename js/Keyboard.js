@@ -3,7 +3,7 @@ function Keyboard() {
 /*
 	const ALT = 18;
 	const CTRL = 17;
-	const ENTER = 13;
+
 	const TAB = 9;
 	const DEL = 46;
 */
@@ -29,7 +29,7 @@ function Keyboard() {
 			} else {
 				customEvent = 'text';
 			}
-			console.log(event.which,customEvent,Object.keys(EVENT_BUTTON_MAP));
+			//console.log(event.which,customEvent,Object.keys(EVENT_BUTTON_MAP));
 			$(document).trigger(customEvent);
 		});
 	}

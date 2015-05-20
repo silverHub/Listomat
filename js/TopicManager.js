@@ -1,11 +1,17 @@
 
 function TopicManager(){
 
-
-  var $topic = $('#topics');
   var topicManager = {};
+  var renderer = TopicRenderer();
 
-  topicManager.getListForTopic = function(actualTopic){
+  var topics = ["General", "Film", "JS Projects"];
+  var currTopic = 0;
+
+
+  topicManager.addTopic = function(){}
+
+  topicManager.getListForTopic = function(){
+    //return a list based on current topic
     return List([
       "General stuff 1",
       "General stuff 2",
@@ -13,14 +19,21 @@ function TopicManager(){
     ]);
   }
 
+
   topicManager.init = function () {
 
+    renderer.update(topics, currTopic);
+
     $(document).on("key.left", function(event){
-        $topic.find('li.active').toggleClass('active').prev("#topics li").toggleClass('active');
+      console.log('left');
+      currTopic = (currTopic === 0) ? topics.length-1 : currTopic-1;
+      renderer.topicChange(topics[currTopic]);
     });
 
     $(document).on("key.right", function(event){
-        $topic.find('li.active').toggleClass('active').next('#topics li').toggleClass('active');
+      console.log('right');
+      currTopic = (currTopic === topics.length-1) ? 0 : currTopic+1;
+      renderer.topicChange(topics[currTopic]);
     });
   }
 
