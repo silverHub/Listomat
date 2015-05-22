@@ -3,7 +3,7 @@
 
   // modules
   TopicRenderer().init();
-  ListRenderer()
+  ListRenderer();
  	Keyboard().init();
   var topicManager = TopicManager().init();
 

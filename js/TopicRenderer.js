@@ -3,18 +3,19 @@ function TopicRenderer(){
   var topicRenderer = {};
   var $topic = $('#topics');
   const $row = $('<li>');
-  const $editableRow = $('<li><input type="text" class="topic edit"></li>');
+  const $editableRow = $('<li><input type="text" class="topic edit new"></li>');
 
-  topicRenderer.topicNewFinished = function topicNewFinished(){
-    console.log("TopicRenderer.topicNewFinished called");
+  topicRenderer.editNewFinished = function topicNewFinished(){
+    console.log("TopicRenderer.editNewFinished called");
 
-    var topicName = $topic.find('.edit').val();
-    $(document).trigger("topic.ready", topicName);
-    $topic.find('.edit').remove();
+    var $input = $topic.find('.edit');
+    var topicName = $input.val();
+    $input.parent().html(topicName).end().remove();
+    return topicName;
   }
 
-  topicRenderer.addTopic = function addTopic(){
-    console.log("TopicRenderer.addTopic called");
+  topicRenderer.editNewStarted = function addTopic(){
+    console.log("TopicRenderer.editNewStarted called");
 
     $topic.append($editableRow.clone()).find('.edit').focus();
   }
@@ -45,20 +46,21 @@ function TopicRenderer(){
 
   topicRenderer.init = function init(){
 
-    $(document).on("topic.update", function(event, topics, current){
+    $(document).on("omat.topic.update", function(event, topics, current){
       topicRenderer.update(topics, current);
     });
 
-    $(document).on("topic.changed", function(event, newTopic){
+    $(document).on("omat.topic.changed", function(event, newTopic){
       topicRenderer.topicChange(newTopic);
     });
 
-    $(document).on("topic.add.new", function(event){
-      topicRenderer.addTopic();
+    $(document).on("omat.topic.edit.new.started", function(event){
+      topicRenderer.editNewStarted();
     });
 
-    $(document).on('topic.new.finished',  function(event){
-      topicRenderer.topicNewFinished();
+    $(document).on('omat.topic.edit.new.finished',  function(event){
+      var topicName = topicRenderer.editNewFinished();
+      $(document).trigger("omat.topic.add", topicName);
     });
 
 

@@ -11,19 +11,14 @@ function List() {
 
 	List.add = function add(text){
 		console.log('List.add called', text);
-		if (text) {
-			internal.push(text);
-			$(document).trigger('list.update', [internal]);
-		}
+		internal.push(text);
 	}
 
+	$(document).trigger('omat.list.render', [internal]);
 
-	$(document).trigger('list.update', [internal]);
 
-	$(document).on("key.enter", function(event){
-		$('#searchContainer').hide();
-		List.add($('#inputBox').val());
-		$('#inputBox').val('');
+	$(document).on("omat.list.add", function(event, newElement){
+		List.add(newElement);
 	});
 
 	return List;
